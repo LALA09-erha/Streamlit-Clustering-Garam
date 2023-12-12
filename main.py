@@ -133,7 +133,7 @@ if selected == "Pre-processing":
 if selected == "Modeling":
   st.markdown("<h1 style='text-align: center;'>Hasil Modeling</h1>",
                 unsafe_allow_html=True)
-  st.write("Modelling dilakukan menggunakan 3 metode yaitu K-Means, AHC dan DBSCAN")
+  st.write("Modelling dilakukan menggunakan metode K-Means")
 
   st.markdown("<h2>Metode K-Means</h2>",
                 unsafe_allow_html=True)
@@ -191,7 +191,7 @@ if selected == "Modeling":
   # Memanggil fungsi plot_clustering
   plot_clustering(scaled_df.values, labels, centroids)
 
-  st.markdown("<h2>Metode AHC</h2>", unsafe_allow_html=True)
+  # st.markdown("<h2>Metode AHC</h2>", unsafe_allow_html=True)
   from sklearn.cluster import AgglomerativeClustering
   from sklearn.metrics.pairwise import pairwise_distances
 
@@ -217,37 +217,37 @@ if selected == "Modeling":
       # st.write(f'Jumlah data dengan label {i}: {cluster_i_indices}')
   unique_labels, counts = np.unique(labels, return_counts=True)
 
-  # Menampilkan jumlah data setiap label
-  st.markdown("<h4>Jumlah data disetiap Klaster</h4>",
-                unsafe_allow_html=True)
-  for label, count in zip(unique_labels, counts):
-      st.write(f"Jumlah data dengan label {label}: {count}")
+  # # Menampilkan jumlah data setiap label
+  # st.markdown("<h4>Jumlah data disetiap Klaster</h4>",
+  #               unsafe_allow_html=True)
+  # for label, count in zip(unique_labels, counts):
+  #     st.write(f"Jumlah data dengan label {label}: {count}")
 
-  st.markdown("<h4>Data Garam Yang Sudah Di Clustering Menggunakan AHC</h4>",
-                unsafe_allow_html=True)
-  df['Klaster']=pd.DataFrame({'Klaster':labels})
-  df[['Kadar Air ','Tak Larut','Kalsium','Magnesium','Sulfat ','NaCl (wb)','NaCl (db)','Klaster']]
+  # st.markdown("<h4>Data Garam Yang Sudah Di Clustering Menggunakan AHC</h4>",
+  #               unsafe_allow_html=True)
+  # df['Klaster']=pd.DataFrame({'Klaster':labels})
+  # df[['Kadar Air ','Tak Larut','Kalsium','Magnesium','Sulfat ','NaCl (wb)','NaCl (db)','Klaster']]
 
-  import streamlit as st
-  import matplotlib.pyplot as plt
-  from scipy.cluster.hierarchy import dendrogram, linkage
-  from sklearn.metrics.pairwise import pairwise_distances
+  # import streamlit as st
+  # import matplotlib.pyplot as plt
+  # from scipy.cluster.hierarchy import dendrogram, linkage
+  # from sklearn.metrics.pairwise import pairwise_distances
 
-  def plot_dendrogram(scaled_df, distance_metric, n_clusters):
-      # Hitung matriks jarak
-      distance_matrix = pairwise_distances(scaled_df, metric=distance_metric)
+  # def plot_dendrogram(scaled_df, distance_metric, n_clusters):
+  #     # Hitung matriks jarak
+  #     distance_matrix = pairwise_distances(scaled_df, metric=distance_metric)
 
-      # Lakukan klasterisasi dengan AHC menggunakan linkage matrix
-      linkage_matrix = linkage(distance_matrix, method='ward')
+  #     # Lakukan klasterisasi dengan AHC menggunakan linkage matrix
+  #     linkage_matrix = linkage(distance_matrix, method='ward')
 
-      # Plot dendrogram
-      plt.figure(figsize=(10, 5))
-      dendrogram(linkage_matrix)
-      plt.title('Dendrogram Visualization')
-      plt.xlabel('Data Index')
-      plt.ylabel('Distance')
-      plt.show()
-      st.pyplot(plt.gcf())
+  #     # Plot dendrogram
+  #     plt.figure(figsize=(10, 5))
+  #     dendrogram(linkage_matrix)
+  #     plt.title('Dendrogram Visualization')
+  #     plt.xlabel('Data Index')
+  #     plt.ylabel('Distance')
+  #     plt.show()
+  #     st.pyplot(plt.gcf())
 
   # Panggil fungsi plot_dendrogram di Streamlit
   # plt.title('Dendrogram Visualization')
@@ -256,38 +256,13 @@ if selected == "Modeling":
   # n_clusters = st.slider('Jumlah Cluster', min_value=2, max_value=10, value=4)
 
   # Panggil fungsi plot_dendrogram dengan argumen yang diberikan
-  plot_dendrogram(scaled_df, distance_metric, n_clusters)
+  # plot_dendrogram(scaled_df, distance_metric, n_clusters)
 
 
 
 
 
-  st.markdown("<h2>Metode DBSCAN</h2>", unsafe_allow_html=True)
-  from sklearn.cluster import DBSCAN
-
-  # Inisialisasi dan fit model DBSCAN
-  dbscan = DBSCAN(eps=0.5, min_samples=3)
-  dbscan.fit(scaled_df)
-
-  # Menampilkan hasil klasterisasi
-  labels = dbscan.labels_
-  n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
-  # print("Jumlah klaster:", n_clusters)
-  # print("Label klaster:", labels)
-
-  unique_labels, counts = np.unique(labels, return_counts=True)
-
-  # Menampilkan jumlah data setiap label
-  st.markdown("<h4>Jumlah data disetiap Klaster</h4>",
-                unsafe_allow_html=True)
-  # Menampilkan jumlah data setiap label
-  for label, count in zip(unique_labels, counts):
-      st.write(f"Jumlah data dengan label {label}: {count}")
-
-  st.markdown("<h4>Data Garam Yang Sudah Di Clustering Menggunakan DBSCAN</h4>",
-                unsafe_allow_html=True)
-  df['Klaster']=pd.DataFrame({'Klaster':labels})
-  df[['Kadar Air ','Tak Larut','Kalsium','Magnesium','Sulfat ','NaCl (wb)','NaCl (db)','Klaster']]
+  # st.markdown("<h2>Metode DBSCAN</h2>", unsafe_allow_html=True)
 
 
 
@@ -314,39 +289,39 @@ if selected == "Evaluasi":
       silhouette_avg = silhouette_score(data, labels)
       st.write(f'Silhouette Coefficient : {silhouette_avg}')
 
-  st.markdown("<h4>Hasil Kualitas Clustering Menggunakan Metode AHC</h4>",
-                unsafe_allow_html=True)
-  from sklearn.cluster import AgglomerativeClustering
-  from sklearn.metrics import silhouette_score
-  import numpy as np
+  # st.markdown("<h4>Hasil Kualitas Clustering Menggunakan Metode AHC</h4>",
+  #               unsafe_allow_html=True)
+  # from sklearn.cluster import AgglomerativeClustering
+  # from sklearn.metrics import silhouette_score
+  # import numpy as np
 
 
-  # 2. Pilih jumlah klaster yang ingin diuji
-  k_values = [4]
+  # # 2. Pilih jumlah klaster yang ingin diuji
+  # k_values = [4]
 
-  # 3. Hitung Silhouette Coefficient untuk setiap jumlah klaster
-  for k in k_values:
-      agglomerative = AgglomerativeClustering(n_clusters=k)
-      labels = agglomerative.fit_predict(data)
-      silhouette_avg = silhouette_score(data, labels)
-      st.write(f'Silhouette Coefficient : {silhouette_avg}')
+  # # 3. Hitung Silhouette Coefficient untuk setiap jumlah klaster
+  # for k in k_values:
+  #     agglomerative = AgglomerativeClustering(n_clusters=k)
+  #     labels = agglomerative.fit_predict(data)
+  #     silhouette_avg = silhouette_score(data, labels)
+  #     st.write(f'Silhouette Coefficient : {silhouette_avg}')
   
-  st.markdown("<h4>Hasil Kualitas Clustering Menggunakan Metode AHC</h4>",
-                unsafe_allow_html=True)
-  from sklearn.cluster import DBSCAN
-  from sklearn.metrics import silhouette_score
-  import numpy as np
+  # st.markdown("<h4>Hasil Kualitas Clustering Menggunakan Metode AHC</h4>",
+  #               unsafe_allow_html=True)
+  # from sklearn.cluster import DBSCAN
+  # from sklearn.metrics import silhouette_score
+  # import numpy as np
 
-  # 2. Tentukan parameter DBSCAN
-  epsilon = 0.5  # Radius jangkauan (epsilon)
-  min_samples = 3  # Jumlah minimum sampel dalam radius epsilon
+  # # 2. Tentukan parameter DBSCAN
+  # epsilon = 0.5  # Radius jangkauan (epsilon)
+  # min_samples = 3  # Jumlah minimum sampel dalam radius epsilon
 
-  # 3. Lakukan klasterisasi dengan DBSCAN
-  dbscan = DBSCAN(eps=epsilon, min_samples=min_samples)
-  labels = dbscan.fit_predict(data)
+  # # 3. Lakukan klasterisasi dengan DBSCAN
+  # dbscan = DBSCAN(eps=epsilon, min_samples=min_samples)
+  # labels = dbscan.fit_predict(data)
 
-  # 4. Hitung Silhouette Coefficient
-  silhouette_avg = silhouette_score(data, labels)
+  # # 4. Hitung Silhouette Coefficient
+  # silhouette_avg = silhouette_score(data, labels)
 
-  # 5. Cetak Silhouette Coefficient
-  st.write(f"Silhouette Coefficient: {silhouette_avg}")
+  # # 5. Cetak Silhouette Coefficient
+  # st.write(f"Silhouette Coefficient: {silhouette_avg}")
